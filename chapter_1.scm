@@ -2,7 +2,7 @@
 (define (square x)
   (* x x))
 
-(define (sum_of_squares x y)
+(define (sum-of-squares x y)
   (+ (square x) (square y) ))
 
 (define (abs x)
@@ -14,6 +14,17 @@
       (* 3 ( - 6 2 ) ( - 2 7))
       ))
 
+
+;exercise 1.3
+;given three numbers, find the sum of the squares of the two larger numberes
+
+(define (greater-sum-of-squares x y z)
+  (cond ((> x y) (cond ((> y z) (sum-of-squares x y))
+                       (else (sum-of-squares x z))))
+         ; x <= y
+         ((> x z) (sum-of-squares x y))
+         (else (sum-of-squares y z))))
+                  
 ;exercise 1.4
 (define ( a-plus-abs-b a b)
   (( if (> b 0) + -) a b))
@@ -70,5 +81,4 @@
 ;(define (g n) (A 1 n)) => 2^n
 ;(define (h n) (A 2 n)) => 2^(h(n-1))
 
-(define (fib n)
 
