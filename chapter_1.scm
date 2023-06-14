@@ -65,10 +65,11 @@
 
 ;exercise 1.9, substitution method for (+ 4 5)
 ; the trees have been omitted due to their size
-; the processes are recursive
+; these are  iterative by scheme standards
 ; a new process will be made for each until a is zero
 ; then the increased value of b will be returned up the stack
 
+;exercise 1.10, Ackerman numbers
 ; turns out running this eats memory with a quickness
 ; (A 2 16) takes over 4 gbs for me
 (define (A x y)
@@ -76,9 +77,14 @@
         ((= x 0) (* 2 y))
         ((= y 1) 2)
         (else (A (- x 1) (A x (- y 1))))))
-
 ;(define (f n) (A 0 n)) => 2*n
 ;(define (g n) (A 1 n)) => 2^n
 ;(define (h n) (A 2 n)) => 2^(h(n-1))
 
+(define (fib n)
+  (define (fib-iter a b count)
+    (if (= count 0)
+        b
+        (fib-iter (+ a b) a (- count 1))))
+  (fib-iter 1 0 n))
 
