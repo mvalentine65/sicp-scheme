@@ -150,22 +150,31 @@
                   (fast-exp-iter (* product base) (- exp 1))))))
   (fast-exp-iter base exp))
 
-;exercise 1.17/1.18
+;exercise 1.17/
 ;design a multiplication procedure analogous to fast-expt that uses a
 ;logarithmic number of steps
 
-;recursive reference function
+;reference function
 ;(define (* a b)
 ;(if (= b 0)
 ;0
 ;(+ a (* a (- b 1)))))
 
-(define (mut-iter a b)
+(define (mult-rec a b)
   (cond
     ((= b 0) 0)
-    ((even? b) (mut-iter (* a 2) (/ b 2)))
-    ((mut-iter (+ a a) (- b 1)))))
-; why dont I need a base case for 1?
+    ((even? b) (mult-rec (+ a a) (/ b 2)))
+    (else (+ a (mult-rec a (- b 1))))))
+
+;excercise 1.18 iterative multiplication in logarithmic time
+(define (mult-iter a b)
+  (define (inner-mult a b acc)
+    (cond
+      ((= b 0) acc)
+      ((even? b) (inner-mult (+ a a) (/ b 2) acc))
+      (else (inner-mult a (- b 1) (+ acc a)))))
+  (inner-mult a b 0))
+                 
 
 ;exercise 1.19
 ;Russian peasant Fibonacci numbers
