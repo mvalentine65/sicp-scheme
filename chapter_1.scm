@@ -1,4 +1,7 @@
 #lang sicp
+;#lang racket/base
+;(require racket/trace)
+
 (define (square x)
   (* x x))
 
@@ -88,3 +91,84 @@
         (fib-iter (+ a b) a (- count 1))))
   (fib-iter 1 0 n))
 
+;exercise 1.11
+(define (f-rec n)
+  (if (< n 3)
+      n
+      (+ (f-rec (- n 1))
+         (* 2 (f-rec (- n 2)))
+         (* 3 (f-rec ( - n 3))))))
+
+(define (f-iter n)
+  (define (f-iter-step a b c count)
+    (cond ((= 0 count) a)
+          (else (f-iter-step b
+                             c
+                             (+ c
+                                (* 2 b)
+                                (* 3 a))
+                             (- count 1)))))
+  (f-iter-step 0 1 2 n))
+
+;exercise 1.12
+(define (pascal-number row col)
+  (if (or (= col 1) (= row col))
+      1
+      (+ (pascal-number (- row 1) (- col 1))
+         (pascal-number (- row 1) (col)))))
+
+;exercise 1.15
+
+(define (p x) (- (* 3 x) (* 4 (cube x))))
+(define (sine angle)
+  (if (not (> (abs angle) 0.1))
+      angle
+      (p (sine (/ angle 3.0)))))
+;a. 4 times
+;b. the sine function g
+;> (/ (/ (/(/ 12.15 4.0) 4) 4) 4)
+;0.0474609375
+
+; exercise 1.16
+
+; rescursive implementation
+;(define (fast-expt b n)
+;(cond ((= n 0) 1)
+;((even? n) (square (fast-expt b (/ n 2))))
+;(else (* b (fast-expt b (- n 1))))))
+
+
+
+(define (fast-exp base exp)
+  (define (fast-exp-iter product exp)
+  (cond
+    ((= exp 0) 1) 
+    ((= exp 1) product)
+    ((= exp 2) (* product product))
+    (else (if (even? exp)
+                  (fast-exp-iter (* product product) (/ exp 2))
+                  (fast-exp-iter (* product base) (- exp 1))))))
+  (fast-exp-iter base exp))
+
+;exercise 1.17/1.18
+;design a multiplication procedure analogous to fast-expt that uses a
+;logarithmic number of steps
+
+;recursive reference function
+;(define (* a b)
+;(if (= b 0)
+;0
+;(+ a (* a (- b 1)))))
+
+(define (mut-iter a b)
+  (cond
+    ((= b 0) 0)
+    ((even? b) (mut-iter (* a 2) (/ b 2)))
+    ((mut-iter (+ a a) (- b 1)))))
+; why dont I need a base case for 1?
+
+;exercise 1.19
+;Russian peasant Fibonacci numbers
+;T_pq(a,b) = (aq + ap + bq) , (bp + aq)
+;p' = p^2 + q^2
+;q' = 2pq + q^2
