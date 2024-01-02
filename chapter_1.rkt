@@ -205,11 +205,11 @@
 ;Exercise 1.21: Use the smallest-divisor procedure to find
 ;the smallest divisor of each of the following numbers: 199,
 ;1999, 19999.
-(define (smallest-divisor n) (find-divisor n 2))
-(define (find-divisor n test-divisor)
+(define (slow-smallest-divisor n) (slow-find-divisor n 2))
+(define (slow-find-divisor n test-divisor)
   (cond ((> (square test-divisor) n) n)
         ((divides? test-divisor n) test-divisor)
-        (else (find-divisor n (+ test-divisor 1)))))
+        (else (slow-find-divisor n (+ test-divisor 1)))))
 
 (define (divides? a b) (= (remainder b a) 0))
 
@@ -292,12 +292,19 @@
 ;the observed ratio of the speeds of the two algorithms, and
 ;how do you explain the fact that it is different from 2
 
+(define (rand-int n)
+  (+ 1 (random (- n 1))))
+
+
 (define (next n)
-  (cond ((= n 2) 3)
-        (+ n 2)))
+  (cond ((even? n) (+ n 1))
+        (else (+ n 2))))
 
 (define (smallest-divisor n) (find-divisor n 2))
 (define (find-divisor n test-divisor)
   (cond ((> (square test-divisor) n) n)
         ((divides? test-divisor n) test-divisor)
-        (else (find-divisor n ( test-divisor 1)))))
+        (else (find-divisor n (next test-divisor)))))
+
+(define (mb-test n)
+  (= (remainder(fast-exp (rand-int n) (- n 1)) n) 1))
