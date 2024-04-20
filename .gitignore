@@ -5,3 +5,9 @@
 *.scm~
 *.scm#*
 .#*.scm
+
+*.bak
+*/*.bak
+
+*.*autorec.*
+*/*.*autorec.*
